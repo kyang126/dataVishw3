@@ -6,6 +6,12 @@ body {
   font: 11px sans-serif;
 }
 
+#graph {
+  float: left;
+  width: 640px;
+  height: 480px;
+}
+
 .axis line,
 .axis text {
   font: 11px sans-serif;
@@ -32,30 +38,37 @@ div.tooltip {
 }
 
 </style>
+<body>
+
+<div id="graph"></div>
+
 <p id = "tooltip">Hello</p>
 
-<label for="type">Stock Type:</label>     
-<input type="text" id="mytype" readonly style="border:0; color:#f6931f; fontweight:bold;">
-<br>  //field where the currently selected type will display     
-<select id="myselectform">  <option value="all">All</option>  
-	<option value="tech">Tech.</option>  
-	<option value="transp">Transp.</option>  
-	<option value="retail">Retail</option>  
-	<option value="fastfood">Fastfood</option> 
-	 <option value="pharm">Pharm.</option>    
-</select>
+<div id="info">
+  <label for="type">Stock Type:</label>     
+  <input type="text" id="mytype" readonly style="border:0; color:#f6931f; fontweight:bold;">
+  <br>  //field where the currently selected type will display     
+  <select id="myselectform">
+    <option value="all">All</option>  
+    <option value="tech">Tech.</option>  
+    <option value="transp">Transp.</option>
+    <option value="retail">Retail</option>  
+    <option value="fastfood">Fastfood</option> 
+    <option value="pharm">Pharm.</option>    
+  </select>
+</div>
 
-<body>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3scatter_full.js"></script>
 
 <script>                    
 document.getElementById("myselectform").onchange = function(){                          
-	$( "#mytype" ).val(this.value);                        
-	 filterType(this.value);                  
-	}  
+   document.getElementById("mytype").html(this.value);                        
+   filterType(this.value);                  
+  }  
 </script> 
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="d3scatter_full.js"></script>
 
 
 </body>
