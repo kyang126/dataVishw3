@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 11px sans-serif;
+}
+
+.axis line,
+.axis text {
+  font: 11px sans-serif;
+}
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.circle:hover {   fill: yellow; } 
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 50px;
+  padding: 8px;
+  font: 10px sans-serif;
+  background: #ddd;
+  border: solid 1px #aaa;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+</style>
+<p id = "tooltip">Hello</p>
+
+<label for="type">Stock Type:</label>     
+<input type="text" id="mytype" readonly style="border:0; color:#f6931f; fontweight:bold;">
+<br>  //field where the currently selected type will display     
+<select id=“myselectform”>  <option value="all">All</option>  
+	<option value="tech">Tech.</option>  
+	<option value="transp">Transp.</option>  
+	<option value="retail">Retail</option>  
+	<option value="fastfood">Fastfood</option> 
+	 <option value="pharm">Pharm.</option>    
+</select>
+
+<body>
+
+<script>                    document.getElementById("myselectform").onchange = function(){                          $( "#mytype" ).val(this.value);                         filterType(this.value);                  }  </script> 
+	
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3scatter_full.js"></script>
+
+
+</body>
+</html>
+
