@@ -94,7 +94,8 @@ d3.csv("stocks.csv", function(error, stocks) {
   drawVis(dataset);
 });
 
-var mytype = "all"; //keep track of currently selected type; default is all var patt = new RegExp("all");  
+var mytype = "all"; //keep track of currently selected type; default is all 
+var patt = new RegExp("all");  
 function filterType(mtype)  {     
   mytype=mtype;       
   var res = patt.test(mytype);       
@@ -116,26 +117,12 @@ var div = d3.select("body").append("div")
     .attr("class", "tooltip")               
     .style("opacity", 0);
 
-
-
-
       d3.select('select')
     .on("change", function() {
 
     key = this.selectedIndex;
 
-     var circles = svg.selectAll("circle")
-       .style('fill', function(d, i) { 
-            if (d.type == key) 
-            {
-
-
-               return col2(d.tValue); 
-            }
-            else {
-              return circle.exit().remove(); //remove any excess circles 
-            }
-        ;})
+    var circles = svg.selectAll("circle")
    .data(data)
    .enter()
    .append("circle")
@@ -144,8 +131,9 @@ var div = d3.select("body").append("div")
       .attr("r", 4)
       .style("stroke", "black")
       .style("opacity", 0.5)
-     // .style("fill", function(data) { return col2(data.tValue);})
-     // .style("opacity", 0.5)
+      .style("fill", function(d) { 
+          return col(d.type); 
+        }) 
 
       .on("mouseover", function(d, i) {
         div.transition()        
@@ -160,17 +148,25 @@ var div = d3.select("body").append("div")
           .duration(500)                
           .style("opacity", 0);   
       })
+      circles.exit().remove(); 
+       circles.enter().append("circle")  //add new circles  
+        .attr("cx", function(d) { 
+          return x(d.price);  
+        })            
+        .attr("cy", function(d) { 
+          return y(d.tValue);  
+        })            
+        .style("fill", function(d) { 
+          return col(d.type); 
+        })  
+        .attr("r", 4)  
+        .style("stroke", "black");  
+
+
+
         // if a data point is selected highlight other 
         // data points of the same color
       
 });
-          /* circle.exit().remove(); 
-
-          circle.enter().append(“circle”)  //add new circles  
-          .attr("cx", function(d) { return x(d.price);  })            
-          .attr("cy", function(d) { return y(d.tValue);  })           
-          .style("fill", function(d) { return col(d.type); })  
-          .attr("r", 4)  
-          .style("stroke", "black"); */
     
 }
