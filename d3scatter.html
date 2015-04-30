@@ -65,7 +65,7 @@ div.tooltip {
 
 <script>                    
 document.getElementById("myselectform").onchange = function(){                          
-   document.getElementById("mytype").html(this.value);                        
+  var value = document.getElementById('mytype').value;                        
    filterType(this.value);                  
   }  
 </script> 
