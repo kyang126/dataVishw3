@@ -26,15 +26,17 @@ body {
 
 div.tooltip {
   position: absolute;
-  text-align: center;
-  width: 60px;
-  height: 50px;
-  padding: 8px;
-  font: 10px sans-serif;
-  background: #ddd;
+  text-align: left;
+  padding: 10px;
+  font: 13px sans-serif;
+  background-color: #ddd;
   border: solid 1px #aaa;
-  border-radius: 8px;
+  border-radius: 5px;
   pointer-events: none;
+}
+
+div.tooltip > div {
+  margin: 5px auto;
 }
 
 </style>
@@ -42,7 +44,7 @@ div.tooltip {
 
 <div id="graph"></div>
 
-<p id = "tooltip">Hello</p>
+<!--<p id = "tooltip">Hello</p>-->
 
 <div id="info">
   <label for="type">Stock Type:</label>     

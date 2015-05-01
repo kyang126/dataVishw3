@@ -1,3 +1,4 @@
+/// <reference path="typings/d3/d3.d.ts"/>
 var margin = {top: 20, right: 20, bottom: 30, left: 50};
 	var w = 640 - margin.left - margin.right;
 	var h = 480 - margin.top - margin.bottom;
@@ -101,7 +102,7 @@ console.log('drawVis', data);
 
 
 var div = d3.select("#graph").append("div")   
-	.attr("class", "tooltip")               
+	.attr("class", "tooltip")
 	.style("opacity", 0);
 
 
@@ -118,15 +119,21 @@ var circle = svg.selectAll("circle")
         .style("fill", function(d) { return col(d.type); })  
         .attr("r", 4)  .style("stroke", "black")
         .on("mouseover", function(d, i) {
+//			var $name = $('div').html('Name: ' + d.name);
+//			var $type = $('div').html('Type: ' + d.type);
+//			var $price = $('div').html('Price: ' + d.price);
+//			var $tValue = $('div').html('tValue: ' + d.tValue);
+//			var $vol = $('div').html('vol: ' + d.vol);
 			div.transition()        
 				.duration(200)      
 				.style("opacity", .9);      
-			div.html(d.name + "<br/>" + d.type + "<br/>" + d.price + "<br/>"  + d.tValue + "<br/>" + d.vol)  
+			div.html('<div>Name: ' + d.name + '</div><div>Type: ' + d.type + "</div><div>Price: " + d.price + "</div><div>tValue: "  + d.tValue + "</div><div>Vol: " + d.vol)  
+			//div.html($name + $type + $price + $tValue + $vol)
 				.style("left", (d3.event.pageX) + "px")     
 				.style("top", (d3.event.pageY - 28) + "px");
 			})
 		.on("mouseout", function(d, i) { 
-			 tooltip.transition()                
+			 div.transition()                
 					.duration(500)                
 					.style("opacity", 0);   
 		});
