@@ -2,22 +2,6 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50};
 	var w = 640 - margin.left - margin.right;
 	var h = 480 - margin.top - margin.bottom;
 
-// var data = [
-//   {name: "A", type: "tech", price: 999, tValue: 500, vol: 1200},
-//   {name: "B", type: "transp", price: 772, tValue: 800, vol: 367},
-//   {name: "C", type: "transp", price: 372, tValue: 670, vol: 558},
-//   {name: "D", type: "tech", price: 774, tValue: 801, vol: 431},
-//   {name: "E", type: "retail", price: 389, tValue: 130, vol: 123},
-//   {name: "F", type: "fastfood", price: 739, tValue: 888, vol: 45},
-//   {name: "G", type: "fastfood", price: 582, tValue: 230, vol: 999},
-//   {name: "H", type: "tech", price: 972, tValue: 284, vol: 87},
-//   {name: "I", type: "pharm", price: 791, tValue: 609, vol: 449},
-//   {name: "J", type: "pharm", price: 291, tValue: 701, vol: 870},
-//   {name: "K", type: "transp", price: 134, tValue: 921, vol: 699},
-//   {name: "L", type: "retail", price: 532, tValue: 731, vol: 1002},
-//   {name: "M", type: "retail", price: 788, tValue: 631, vol: 310}
-// ];
-
 var col = d3.scale.category10();
 
 var col2 = d3.scale.linear()
@@ -120,9 +104,41 @@ var div = d3.select("#graph").append("div")
 	.attr("class", "tooltip")               
 	.style("opacity", 0);
 
-		d3.select('select')
+
+var circle = svg.selectAll("circle")            
+ .data(data); //join with new data  
+        circle  //update existing circles – price, tValue, and type will change with type   
+        .attr("cx", function(d) { return x(d.price);  })            
+        .attr("cy", function(d) { return y(d.tValue);  })            
+        .style("fill", function(d) { return col(d.type); });                  
+        circle.exit().remove(); //remove any excess circles  
+        circle.enter().append("circle")  //add new circles  
+        .attr("cx", function(d) { return x(d.price);  })            
+        .attr("cy", function(d) { return y(d.tValue);  })            
+        .style("fill", function(d) { return col(d.type); })  
+        .attr("r", 4)  .style("stroke", "black")
+        .on("mouseover", function(d, i) {
+			div.transition()        
+				.duration(200)      
+				.style("opacity", .9);      
+			div.html(d.name + "<br/>" + d.type + "<br/>" + d.price + "<br/>"  + d.tValue + "<br/>" + d.vol)  
+				.style("left", (d3.event.pageX) + "px")     
+				.style("top", (d3.event.pageY - 28) + "px");
+			})
+		.on("mouseout", function(d, i) { 
+			 tooltip.transition()                
+					.duration(500)                
+					.style("opacity", 0);   
+		});
+
+		
+
+
+
+/*	d3.select('select')
 	.on("change", function() {
 		console.log('change?');
+
 
 	key = this.selectedIndex;
 
@@ -169,6 +185,6 @@ var div = d3.select("#graph").append("div")
 		// if a data point is selected highlight other 
 		// data points of the same color
 		
-});
+}); */
 	
 }
