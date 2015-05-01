@@ -29,8 +29,8 @@ var col2 = d3.scale.linear()
 var svg = d3.select("#graph").append("svg")
 	.attr("width", w + margin.left + margin.right)
 	.attr("height", h + margin.top + margin.bottom)
-.append("g")
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var x = d3.scale.linear()
 			.domain([0, 1000])
@@ -83,50 +83,50 @@ var format = d3.time.format("%b %Y");
 var dataset;
 
 d3.csv("stocks.csv", function(error, stocks) {
-if (error) {
-	return console.log(error);
-}
-stocks.forEach(function(d) {
-	d.price = +d.price;
-	//console.log(d);
-	// d.date = format.parse(d.date);
-});
+	if (error) {
+		return console.log(error);
+	}
+	stocks.forEach(function(d) {
+		d.price = +d.price;
+		//console.log(d);
+		// d.date = format.parse(d.date);
+	});
 
-dataset = stocks;
-drawVis(dataset);
+	dataset = stocks;
+	drawVis(dataset);
 });
 
 var mytype = "all"; //keep track of currently selected type; default is all 
 var patt = new RegExp("all");  
 
 function filterType(mtype)  {   
-  console.log("type: " + mtype);  
-  mytype=mtype;       
-  var res = patt.test(mytype);       
-  if(res){  
-  	var toVisualize = dataset;  //use all the data        
-  }else{            
-  	var toVisualize= dataset.filter(function(d, i) { //filter to only the selected type         
-  		return d["type"] == mytype;  
-  	});         
-  }
-  console.log(toVisualize);     
-  drawVis(toVisualize); 
+	console.log("type: " + mtype);  
+	mytype=mtype;       
+	var res = patt.test(mytype);       
+	if (res) {  
+		var toVisualize = dataset;  //use all the data        
+	} else {            
+		var toVisualize= dataset.filter(function(d, i) { //filter to only the selected type         
+			return d["type"] == mytype;  
+		});         
+	}
+	console.log(toVisualize);     
+	drawVis(toVisualize); 
 } 
 
 
 function drawVis(data) {
- var circle = svg.selectAll("circle")            
- .data(data); //join with new data  
-        circle  //update existing circles – price, tValue, and type will change with type   
-        .attr("cx", function(d) { return x(d.price);  })            
-        .attr("cy", function(d) { return y(d.tValue);  })            
-        .style("fill", function(d) { return col(d.type); });                  
-        circle.exit().remove(); //remove any excess circles  
-        circle.enter().append("circle")  //add new circles  
-        .attr("cx", function(d) { return x(d.price);  })            
-        .attr("cy", function(d) { return y(d.tValue);  })            
-        .style("fill", function(d) { return col(d.type); })  
-        .attr("r", 4)  .style("stroke", "black"); 
+	var circle = svg.selectAll("circle")            
+	.data(data); //join with new data  
+		circle  //update existing circles – price, tValue, and type will change with type   
+		.attr("cx", function(d) { return x(d.price);  })            
+		.attr("cy", function(d) { return y(d.tValue);  })            
+		.style("fill", function(d) { return col(d.type); });                  
+		circle.exit().remove(); //remove any excess circles  
+		circle.enter().append("circle")  //add new circles  
+		.attr("cx", function(d) { return x(d.price);  })            
+		.attr("cy", function(d) { return y(d.tValue);  })            
+		.style("fill", function(d) { return col(d.type); })  
+		.attr("r", 4)  .style("stroke", "black"); 
 	
 }
