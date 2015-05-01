@@ -1,3 +1,5 @@
+"use strict";
+
 var margin = {top: 20, right: 20, bottom: 30, left: 50};
 	var w = 640 - margin.left - margin.right;
 	var h = 480 - margin.top - margin.bottom;
@@ -44,27 +46,27 @@ var y = d3.scale.linear()
 
 var yAxis = d3.svg.axis()
 			.scale(y)
-			.orient("left")
+			.orient("left");
 
 svg.append("g")
 	.attr("class", "axis")
 	.attr("transform", "translate(0," + h + ")")
 	.call(xAxis)
-.append("text")
-	.attr("x", w)
-	.attr("y", -6)
-	.style("text-anchor", "end")
-	.text("Price");
+	.append("text")
+		.attr("x", w)
+		.attr("y", -6)
+		.style("text-anchor", "end")
+		.text("Price");
 
 svg.append("g")
 	.attr("class", "axis")
 	.call(yAxis)
-.append("text")
-	.attr("transform", "rotate(-90)")
-	.attr("y", 6)
-	.attr("dy", ".71em")
-	.style("text-anchor", "end")
-	.text("True Value");    
+	.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("y", 6)
+		.attr("dy", ".71em")
+		.style("text-anchor", "end")
+		.text("True Value");    
 
 // var circles = svg.selectAll("circle")
 //  .data(data)

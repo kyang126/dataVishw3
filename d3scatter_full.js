@@ -1,4 +1,6 @@
 /// <reference path="typings/d3/d3.d.ts"/>
+"use strict";
+
 var margin = {top: 20, right: 20, bottom: 30, left: 50};
 	var w = 640 - margin.left - margin.right;
 	var h = 480 - margin.top - margin.bottom;
