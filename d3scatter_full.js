@@ -31,7 +31,7 @@ var y = d3.scale.linear()
 
 var yAxis = d3.svg.axis()
 			.scale(y)
-			.orient("left")
+			.orient("left");
 
 svg.append("g")
 	.attr("class", "axis")
@@ -84,23 +84,23 @@ drawVis(dataset);
 var mytype = "all"; //keep track of currently selected type; default is all 
 var patt = new RegExp("all");  
 function filterType(mtype)  {   
-//console.log(mtype);  
-mytype=mtype;       
-var res = patt.test(mytype);       
-if(res){  
-	var toVisualize = dataset;  //use all the data        
-}else{            
-	var toVisualize= dataset.filter(function(d, i) { //filter to only the selected type         
-		return d["type"] == mytype;  
-	});         
-}
-//console.log(toVisualize);     
-drawVis(toVisualize); 
+	//console.log(mtype);  
+	mytype=mtype;       
+	var res = patt.test(mytype);       
+	if (res) {  
+		var toVisualize = dataset;  //use all the data        
+	} else {            
+		var toVisualize = dataset.filter(function(d, i) { //filter to only the selected type         
+			return d["type"] == mytype;  
+		});         
+	}
+	//console.log(toVisualize);     
+	drawVis(toVisualize); 
 } 
 
 
 function drawVis(data) {
-console.log('drawVis', data);
+console.log("drawVis", data);
 
 
 var div = d3.select("#graph").append("div")   
@@ -110,22 +110,22 @@ var div = d3.select("#graph").append("div")
 
 var circle = svg.selectAll("circle")            
  .data(data); //join with new data  
-        circle  //update existing circles – price, tValue, and type will change with type   
-        .attr("cx", function(d) { return x(d.price);  })            
-        .attr("cy", function(d) { return y(d.tValue);  })            
-        .style("fill", function(d) { return col(d.type); });                  
-        circle.exit().remove(); //remove any excess circles  
-        circle.enter().append("circle")  //add new circles  
-        .attr("cx", function(d) { return x(d.price);  })            
-        .attr("cy", function(d) { return y(d.tValue);  })            
-        .style("fill", function(d) { return col(d.type); })  
-        .attr("r", 4)  .style("stroke", "black")
-        .on("mouseover", function(d, i) {
-//			var $name = $('div').html('Name: ' + d.name);
-//			var $type = $('div').html('Type: ' + d.type);
-//			var $price = $('div').html('Price: ' + d.price);
+		circle  //update existing circles – price, tValue, and type will change with type   
+		.attr("cx", function(d) { return x(d.price);  })            
+		.attr("cy", function(d) { return y(d.tValue);  })            
+		.style("fill", function(d) { return col(d.type); });                  
+		circle.exit().remove(); //remove any excess circles  
+		circle.enter().append("circle")  //add new circles  
+		.attr("cx", function(d) { return x(d.price);  })            
+		.attr("cy", function(d) { return y(d.tValue);  })            
+		.style("fill", function(d) { return col(d.type); })  
+		.attr("r", 4)  .style("stroke", "black")
+		.on("mouseover", function(d, i) {
+//			var $name   = $('div').html('Name: ' + d.name);
+//			var $type   = $('div').html('Type: ' + d.type);
+//			var $price  = $('div').html('Price: ' + d.price);
 //			var $tValue = $('div').html('tValue: ' + d.tValue);
-//			var $vol = $('div').html('vol: ' + d.vol);
+//			var $vol    = $('div').html('vol: ' + d.vol);
 			div.transition()        
 				.duration(200)      
 				.style("opacity", .9);      

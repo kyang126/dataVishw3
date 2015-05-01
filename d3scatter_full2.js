@@ -101,7 +101,7 @@ var patt = new RegExp("all");
 
 function filterType(mtype)  {   
 	console.log("type: " + mtype);  
-	mytype=mtype;       
+	mytype = mtype;       
 	var res = patt.test(mytype);       
 	if (res) {  
 		var toVisualize = dataset;  //use all the data        
