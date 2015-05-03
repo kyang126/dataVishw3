@@ -39,6 +39,11 @@ div.tooltip > div {
   margin: 5px auto;
 }
 
+#sliderArea {
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
 </style>
 <body>
 
@@ -56,12 +61,23 @@ div.tooltip > div {
     <option value="Clay">Clay</option>
     <option value="Grass">Grass</option>      
   </select>
+<div id="sliderArea">
+  <p>
+    <label for="amount">Point range:</label>
+    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+  </p>
+  <div id="slider-range"></div>
+  </div>
+
 </div>
 
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="tennisScatter.js"></script>
+
+<link rel="stylesheet" type="text/css" href="jquery-ui-1.11.4/jquery-ui.css">
 
 <script>                    
 document.getElementById("myselectform").onchange = function(){                          

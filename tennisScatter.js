@@ -1,6 +1,8 @@
 /// <reference path="typings/d3/d3.d.ts"/>
 "use strict";
 
+$(document).ready(function() {
+
 var margin = {top: 20, right: 20, bottom: 30, left: 50};
 	var w = 640 - margin.left - margin.right;
 	var h = 480 - margin.top - margin.bottom;
@@ -26,7 +28,7 @@ var xAxis = d3.svg.axis()
 			.orient("bottom"); 
 
 var y = d3.scale.linear()
-			.domain([0, 1000])
+			.domain([0, 14500])
 			.range([h, 0]);
 
 var yAxis = d3.svg.axis()
@@ -88,8 +90,41 @@ function filterType(mtype)  {
 } 
 
 
+function filterData(attr, values){
+	// console.log(values);
+	// for (var i = 0; i < attributes.length; i++){
+	// 	if (attr == attributes[i]){
+	// 		ranges[i] = values;
+	// 	}
+	// }
+	var attributes = ["WPts"];
+	var ranges = [[values[0], values[1]]];
+	var toVisualize = dataset.filter(function(d) {
+	for (var i = 0; i < attributes.length; i++){ //for each attribute, return only if in range
+		return d[attributes[i]] >= ranges[i][0] && d[attributes[i]] <= ranges[i][1]; }
+	});
+	//filter toVisualize by last selected type
+	drawVis(toVisualize); 
+}
+
+$(function() {
+	$( "#slider-range" ).slider({
+		range: true,
+		min: 0,
+		max: 14085,
+		values: [ 0, 14085],
+		slide: function( event, ui ) {
+			$( "#amount" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+			filterData("WPts", ui.values);
+		}
+	});
+	$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+	  " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+});
+
+
 function drawVis(data) {
-console.log("drawVis", data);
+//console.log("drawVis", data);
 
 
 var div = d3.select("#graph").append("div")   
@@ -127,8 +162,6 @@ var circle = svg.selectAll("circle")
 			 div.transition()                
 					.duration(500)                
 					.style("opacity", 0);   
-		});
-
-		
-	
+		});	
 }
+});

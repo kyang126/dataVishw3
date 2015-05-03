@@ -14,8 +14,8 @@ var col2 = d3.scale.linear()
 var svg = d3.select("#graph").append("svg")
 	.attr("width", w + margin.left + margin.right)
 	.attr("height", h + margin.top + margin.bottom)
-.append("g")
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var x = d3.scale.linear()
 			.domain([0, 1000])
@@ -67,7 +67,7 @@ svg.append("g")
 var format = d3.time.format("%b %Y");
 var dataset;
 
-d3.csv("stocks.csv", function(error, stocks) {
+d3.csv("apttennis.csv", function(error, stocks) {
 if (error) {
 	return console.log(error);
 }
@@ -109,91 +109,29 @@ var div = d3.select("#graph").append("div")
 
 
 var circle = svg.selectAll("circle")            
- .data(data); //join with new data  
-		circle  //update existing circles – price, tValue, and type will change with type   
-		.attr("cx", function(d) { return x(d.price);  })            
-		.attr("cy", function(d) { return y(d.tValue);  })            
-		.style("fill", function(d) { return col(d.type); });                  
-		circle.exit().remove(); //remove any excess circles  
-		circle.enter().append("circle")  //add new circles  
-		.attr("cx", function(d) { return x(d.price);  })            
-		.attr("cy", function(d) { return y(d.tValue);  })            
-		.style("fill", function(d) { return col(d.type); })  
-		.attr("r", 4)  .style("stroke", "black")
-		.on("mouseover", function(d, i) {
-//			var $name   = $('div').html('Name: ' + d.name);
-//			var $type   = $('div').html('Type: ' + d.type);
-//			var $price  = $('div').html('Price: ' + d.price);
-//			var $tValue = $('div').html('tValue: ' + d.tValue);
-//			var $vol    = $('div').html('vol: ' + d.vol);
-			div.transition()        
-				.duration(200)      
-				.style("opacity", .9);      
-			div.html('<div>Name: ' + d.name + '</div><div>Type: ' + d.type + "</div><div>Price: " + d.price + "</div><div>tValue: "  + d.tValue + "</div><div>Vol: " + d.vol)  
-			//div.html($name + $type + $price + $tValue + $vol)
-				.style("left", (d3.event.pageX) + "px")     
-				.style("top", (d3.event.pageY - 28) + "px");
-			})
-		.on("mouseout", function(d, i) { 
-			 div.transition()                
-					.duration(500)                
-					.style("opacity", 0);   
-		});
-
-		
-
-
-
-/*	d3.select('select')
-	.on("change", function() {
-		console.log('change?');
-
-
-	key = this.selectedIndex;
-
-	var circles = svg.selectAll("circle")
-		 .data(data)
-		 .enter()
-		 .append("circle")
-			.attr("cx", function(d) { return x(d.price);  })
-			.attr("cy", function(d) { return y(d.tValue);  })
-			.attr("r", 4)
-			.style("stroke", "black")
-			.style("opacity", 0.5)
-			.style("fill", function(d) {
-				//console.log('fill area', d); 
-				return col(d.type); 
-			}) 
-			.on("mouseover", function(d, i) {
-				div.transition()        
-					.duration(200)      
-					.style("opacity", .9);      
-				div.html(d.name + "<br/>" + d.type + "<br/>" + d.price + "<br/>"  + d.tValue + "<br/>" + d.vol)  
-					.style("left", (d3.event.pageX) + "px")     
-					.style("top", (d3.event.pageY - 28) + "px");
-			})
-			.on("mouseout", function(d, i) { 
-				 tooltip.transition()                
-						.duration(500)                
-						.style("opacity", 0);   
-			});
-	
-	 circles.exit().remove(); 
-	 circles.enter().append("circle")  //add new circles  
-		.attr("cx", function(d) { 
-			return x(d.price);  
-		})            
-		.attr("cy", function(d) { 
-			return y(d.tValue);  
-		})            
-		.style("fill", function(d) { 
-			return col(d.type); 
-		})  
-		.attr("r", 4)  
-		.style("stroke", "black");  
-		// if a data point is selected highlight other 
-		// data points of the same color
-		
-}); */
-	
+ 	.data(data); //join with new data  
+circle  //update existing circles – price, tValue, and type will change with type   
+	.attr("cx", function(d) { return x(d.price);  })            
+	.attr("cy", function(d) { return y(d.tValue);  })            
+	.style("fill", function(d) { return col(d.type); });                  
+	circle.exit().remove(); //remove any excess circles  
+	circle.enter().append("circle")  //add new circles  
+	.attr("cx", function(d) { return x(d.price);  })            
+	.attr("cy", function(d) { return y(d.tValue);  })            
+	.style("fill", function(d) { return col(d.type); })  
+	.attr("r", 4)  .style("stroke", "black")
+	.on("mouseover", function(d, i) {
+		div.transition()        
+			.duration(200)      
+			.style("opacity", .9);      
+		div.html('<div>Name: ' + d.name + '</div><div>Type: ' + d.type + "</div><div>Price: " + d.price + "</div><div>tValue: "  + d.tValue + "</div><div>Vol: " + d.vol)  
+		//div.html($name + $type + $price + $tValue + $vol)
+			.style("left", (d3.event.pageX) + "px")     
+			.style("top", (d3.event.pageY - 28) + "px");
+		})
+	.on("mouseout", function(d, i) { 
+		 div.transition()                
+				.duration(500)                
+				.style("opacity", 0);   
+	});
 }
