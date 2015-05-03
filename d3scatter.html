@@ -39,9 +39,10 @@ div.tooltip > div {
   margin: 5px auto;
 }
 
-#sliderArea {
+.sliderArea {
   overflow: auto;
   padding-bottom: 10px;
+  width: 200px;
 }
 
 </style>
@@ -52,23 +53,38 @@ div.tooltip > div {
 <!--<p id = "tooltip">Hello</p>-->
 
 <div id="info">
-  <label for="type">Stock Type:</label>     
-  <input type="text" id="mytype" readonly style="border:0; color:#f6931f; fontweight:bold;">
-  <br>  //field where the currently selected type will display     
-  <select id="myselectform">
+  <label for="type">Surface Type:</label>     
+  <select id="surfaceSelect">
     <option value="all">All</option>  
     <option value="Hard">Hard</option>  
     <option value="Clay">Clay</option>
     <option value="Grass">Grass</option>      
   </select>
-<div id="sliderArea">
-  <p>
-    <label for="amount">Point range:</label>
-    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-  </p>
-  <div id="slider-range"></div>
-  </div>
+  <br />
 
+  <label for="type">Gender:</label>     
+  <select id="genderSelect">
+    <option value="all">All</option>  
+    <option value="Female">Female</option>  
+    <option value="Male">Male</option>
+  </select>
+
+<div id="sliderArea-wins" class="sliderArea">
+  <p>
+    <label for="amount">Win range:</label>
+    <input type="text" id="amount-wins" readonly style="border:0; color:#f6931f; font-weight:bold;">
+  </p>
+  <div id="slider-wins"></div>
+  </div>
+</div>
+
+<div id="sliderArea-rank" class="sliderArea">
+  <p>
+    <label for="amount">Rank range:</label>
+    <input type="text" id="amount-rank" readonly style="border:0; color:#f6931f; font-weight:bold;">
+  </p>
+  <div id="slider-rank"></div>
+  </div>
 </div>
 
 
@@ -80,10 +96,14 @@ div.tooltip > div {
 <link rel="stylesheet" type="text/css" href="jquery-ui-1.11.4/jquery-ui.css">
 
 <script>                    
-document.getElementById("myselectform").onchange = function(){                          
-  var value = document.getElementById('mytype').value;                        
-   filterType(this.value);                  
-  }  
+$("#surfaceSelect").change(function(){ 
+  var value = $('#surfaceSelect').val();                        
+  filterType("Surface", this.value);                  
+});
+$("#genderSelect").change(function(){                   
+  var value = $('#genderSelect').val();                        
+  filterType("Gender", this.value);                  
+} );
 </script> 
 
 
