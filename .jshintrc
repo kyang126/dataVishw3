@@ -1,7 +1,0 @@
-{
-	"globals": {
-		"jQuery": false,
-		"d3": false,
-		"console": false
-	}
-}
