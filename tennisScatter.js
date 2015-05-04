@@ -29,6 +29,9 @@ var svg = d3.select("#graph").append("svg")
 var maxWins = 0; //Global store for wins
 var maxRank = 0; //Global store for rank
 
+var winsMap = new Map();
+var winsMapArr = [];
+
 var format = d3.time.format("%b %Y");
 var dataset;
 
@@ -38,22 +41,70 @@ $(document).ready(function() {
 			return console.log(error);
 		}
 		tennis.forEach(function(d) { //Convert data to Numbers
+			//console.log(d);
 			d.rank = +d.Rank;
 			d.wins = +d.Wins;
 			if (d.rank >= maxRank) {
 				maxRank = +d.rank;
 			}
-			if (d.wins >= maxWins) {
-				maxWins = +d.wins;
-			}
+			// if (d.wins >= maxWins) {
+			// 	maxWins = +d.wins;
+			// }
+			countMap(d);
 		});
+		winsMapArr = convertMapToArray(winsMap);
+		//console.log(winsMap);
 		createGraphAxis();
 		createSliders();
 
 		dataset = tennis;
-		drawVis(dataset);
+		drawVis(winsMapArr);
 	});
-});  
+	$("#surfaceSelect").change(function(){ 
+		var value = $('#surfaceSelect').val();                        
+		filterType("Surface", this.value);                  
+	});
+	$("#genderSelect").change(function(){                   
+		var value = $('#genderSelect').val();                        
+		filterType("Gender", this.value);                  
+	});
+}); 
+
+function countMap (d) {
+	if (winsMap.has(d.Name)) { //if it has the name, increment
+		winsMap.set(d.Name, 
+			{
+				Name: d.Name,
+				Surface: "All",
+				rank: d.rank,
+				wins: winsMap.get(d.Name).wins + +d.wins,
+				Gender: d.Gender
+			}
+		);
+	} else { //insert the name
+		winsMap.set(d.Name, 
+			{
+				Name: d.Name,
+				Surface: "All",
+				rank: d.rank,
+				wins: +d.wins,
+				Gender: d.Gender
+			}
+		);
+	}
+}
+
+function convertMapToArray(map) {
+	var arr = [];
+	map.forEach(function(d) {
+		arr.push(d);
+		if (d.wins > maxWins) {
+			maxWins = d.wins;
+		}
+	});
+	//console.log(maxWins);
+	return arr;
+}
 
 var x, xAxis, y, yAxis;
 function createGraphAxis() {
@@ -74,7 +125,7 @@ function createGraphAxis() {
 				.orient("left");
 
 	svg.append("g")
-		.attr("class", "axis")
+		.attr("class", "x axis")
 		.attr("transform", "translate(0," + h + ")")
 		.call(xAxis)
 	.append("text")
@@ -84,7 +135,7 @@ function createGraphAxis() {
 		.text("Avg. Rank");
 
 	svg.append("g")
-		.attr("class", "axis")
+		.attr("class", "y axis")
 		.call(yAxis)
 	.append("text")
 		.attr("transform", "rotate(-90)")
@@ -94,18 +145,22 @@ function createGraphAxis() {
 		.text("Wins");  
 }
 
-
 var mytype = "all"; //keep track of currently selected type; default is all 
 var patt = new RegExp("all");  
 function filterType(category, mtype)  { 
-	mytype=mtype;       
+	mytype = mtype;       
 	var res = patt.test(mytype);       
-	if (res) {  
-		var toVisualize = dataset;  //use all the data        
+	if (res) {
+		//console.log(dataset);
+		//var mapArray = convertMapToArray(winsMap);
+		//changeAxis(true, [0, maxWins]);
+		//console.log(mapArray);
+		var toVisualize = winsMapArr;  //use all the data       
 	} else {            
 		var toVisualize = dataset.filter(function(d, i) { //filter to only the selected type         
 			return d[category] == mytype;  
-		});         
+		});
+		//Need to adjust axis       
 	}
 	drawVis(toVisualize); 
 } 
@@ -118,7 +173,7 @@ function filterData(attributes, values){
 	// 		ranges[i] = values;
 	// 	}
 	// }
-	var attributes = ["rank"];
+	var attributes = ["Rank", "Wins"];
 	var ranges = [[values[0], values[1]]];
 	var toVisualize = dataset.filter(function(d) {
 	for (var i = 0; i < attributes.length; i++){ //for each attribute, return only if in range
@@ -136,6 +191,8 @@ function changeAxis(isYAxis, values) {
 		yAxis = d3.svg.axis()
 					.scale(y)
 					.orient("left");
+		svg.selectAll(".y.axis")
+			.call(yAxis);
 	} else { //Do stuff to the X
 		x = d3.scale.linear()
 			.domain([values[0], values[1]])
@@ -143,12 +200,14 @@ function changeAxis(isYAxis, values) {
 		xAxis = d3.svg.axis()
 					.scale(x)
 					.orient("bottom"); 
+		svg.selectAll(".x.axis")
+			.call(xAxis);
 	}
-	drawVis(dataset);
+	//drawVis(dataset);
 }
 
 function createSliders() {
-	console.log(maxWins);
+	//console.log(maxWins);
 	//Slider for the number of wins
 	$( "#slider-wins" ).slider({
 		range: true,
@@ -202,11 +261,6 @@ function drawVis(data) {
 			.style("fill", function(d) { return col(d.Surface); })  
 			.attr("r", 4)  .style("stroke", "black")
 			.on("mouseover", function(d, i) {
-	//			var $name   = $('div').html('Name: ' + d.name);
-	//			var $type   = $('div').html('Type: ' + d.type);
-	//			var $price  = $('div').html('Price: ' + d.price);
-	//			var $tValue = $('div').html('tValue: ' + d.tValue);
-	//			var $vol    = $('div').html('vol: ' + d.vol);
 				div.transition()        
 					.duration(200)      
 					.style("opacity", .9);      
