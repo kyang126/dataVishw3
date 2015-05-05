@@ -33,9 +33,21 @@ var winsMap = new Map();
 var winsMapArr = [];
 
 var format = d3.time.format("%b %Y");
-var dataset;
 
+var attributes = ["Rank", "Wins"];
+	var ranges=[[0,maxRank],[0,maxWins]];
+
+var dataset;
+var winsBegin =0;
+var winsEnd= maxWins;
+var rankBegin=0;
+var rankEnd = maxRank;
+
+var currentSurface = "all";
+var currentGender = "all";
+	
 $(document).ready(function() {
+
 	d3.csv("newTennisData.csv", function(error, tennis) {
 		if (error) {
 			return console.log(error);
@@ -52,6 +64,8 @@ $(document).ready(function() {
 			// }
 			countMap(d);
 		});
+		rankEnd = maxRank;
+		console.log("maxrank " + rankEnd + " " + maxRank);
 		winsMapArr = convertMapToArray(winsMap);
 		//console.log(winsMap);
 		createGraphAxis();
@@ -61,11 +75,13 @@ $(document).ready(function() {
 		drawVis(winsMapArr);
 	});
 	$("#surfaceSelect").change(function(){ 
-		var value = $('#surfaceSelect').val();                        
+		var value = $('#surfaceSelect').val();  
+		currentSurface = value;                      
 		filterType("Surface", this.value);                  
 	});
 	$("#genderSelect").change(function(){                   
-		var value = $('#genderSelect').val();                        
+		var value = $('#genderSelect').val(); 
+		currentGender = value;                       
 		filterType("Gender", this.value);                  
 	});
 }); 
@@ -102,6 +118,7 @@ function convertMapToArray(map) {
 			maxWins = d.wins;
 		}
 	});
+	winsEnd= maxWins
 	//console.log(maxWins);
 	return arr;
 }
@@ -147,6 +164,7 @@ function createGraphAxis() {
 
 var mytype = "all"; //keep track of currently selected type; default is all 
 var patt = new RegExp("all");  
+
 function filterType(category, mtype)  { 
 	mytype = mtype;       
 	var res = patt.test(mytype);       
@@ -155,10 +173,10 @@ function filterType(category, mtype)  {
 		//var mapArray = convertMapToArray(winsMap);
 		//changeAxis(true, [0, maxWins]);
 		//console.log(mapArray);
-		var toVisualize = winsMapArr;  //use all the data       
+	 var toVisualize = winsMapArr;  //use all the data       
 	} else {            
 		var toVisualize = dataset.filter(function(d, i) { //filter to only the selected type         
-			return d[category] == mytype;  
+			return d["Gender"] == currentGender && d["Surface"] == currentSurface;  
 		});
 		//Need to adjust axis       
 	}
@@ -166,22 +184,21 @@ function filterType(category, mtype)  {
 } 
 
 
-function filterData(attributes, values){
-	// console.log(values);
-	// for (var i = 0; i < attributes.length; i++){
-	// 	if (attr == attributes[i]){
-	// 		ranges[i] = values;
-	// 	}
-	// }
-	var attributes = ["Rank", "Wins"];
-	var ranges = [[values[0], values[1]]];
-	var toVisualize = dataset.filter(function(d) {
-	for (var i = 0; i < attributes.length; i++){ //for each attribute, return only if in range
-		return d[attributes[i]] >= ranges[i][0] && d[attributes[i]] <= ranges[i][1]; }
-	});
-	//filter toVisualize by last selected type
-	drawVis(toVisualize); 
-}
+ function filterData(attr, values){   
+  
+ 	for (var i = 0; i < attributes.length; i++){     
+ 		if (attr == attributes[i]){       
+ 			ranges[i] = values;     
+ 		}    
+ 	}    
+  var toVisualize = dataset.filter(function(d) {    
+ 		for (var i = 0; i < attributes.length; i++){  //for each attribute, return only if in range   
+ 			return d[attributes[i]] >= ranges[i][0] && d[attributes[i]] <= ranges[i][1];  
+ 			}     
+ 		});   //filter toVisualize by last selected type  
+ 	
+ 	drawVis(toVisualize); 
+ }
 
 function changeAxis(isYAxis, values) {
 	if (isYAxis) {//Do stuff to the Y
@@ -203,12 +220,12 @@ function changeAxis(isYAxis, values) {
 		svg.selectAll(".x.axis")
 			.call(xAxis);
 	}
-	//drawVis(dataset);
 }
 
 function createSliders() {
 	//console.log(maxWins);
 	//Slider for the number of wins
+	
 	$( "#slider-wins" ).slider({
 		range: true,
 		min: 0,
@@ -218,6 +235,10 @@ function createSliders() {
 			$( "#amount-wins" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
 			filterData(["wins"], ui.values);
 			changeAxis(true, ui.values);
+			winsBegin = ui.values[0];
+			winsEnd = ui.values[1];
+			ranges=[[rankBegin,rankEnd],[winsBegin,winsEnd]];
+			//console.log("wins; " + winsBegin);
 		}
 	});
 	$( "#amount-wins" ).val($( "#slider-wins" ).slider( "values", 0 ) +
@@ -233,10 +254,15 @@ function createSliders() {
 			$( "#amount-rank" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
 			filterData(["wins"], ui.values);
 			changeAxis(false, ui.values);
+			rankBegin = ui.values[0];
+			rankEnd = ui.values[1];
+			ranges=[[rankBegin,rankEnd],[winsBegin,winsEnd]];
 		}
 	});
 	$( "#amount-rank" ).val($( "#slider-rank" ).slider( "values", 0 ) +
 	  " - " + $( "#slider-rank" ).slider( "values", 1 ));
+
+	console.log("begin: " + winsBegin + " end: " + winsEnd);
 }
 
 
