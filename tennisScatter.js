@@ -76,12 +76,12 @@ $(document).ready(function() {
 	});
 	$("#surfaceSelect").change(function(){ 
 		var value = $('#surfaceSelect').val();  
-		currentSurface = value;                      
+		currentSurface = this.value;                      
 		filterType("Surface", this.value);                  
 	});
 	$("#genderSelect").change(function(){                   
 		var value = $('#genderSelect').val(); 
-		currentGender = value;                       
+		currentGender = this.value;                       
 		filterType("Gender", this.value);                  
 	});
 }); 
@@ -185,18 +185,31 @@ function filterType(category, mtype)  {
 
 
  function filterData(attr, values){   
-  
- 	for (var i = 0; i < attributes.length; i++){     
+  //console.log(attr);
+  var index = 0;
+  if(attr = ["Wins"]){
+  	//console.log("it works");
+  	index = 1;
+  } else{
+  	index = 0;
+  }
+
+
+ 	/*for (var i = 0; i < attributes.length; i++){     
  		if (attr == attributes[i]){       
  			ranges[i] = values;     
  		}    
- 	}    
-  var toVisualize = dataset.filter(function(d) {    
- 		for (var i = 0; i < attributes.length; i++){  //for each attribute, return only if in range   
- 			return d[attributes[i]] >= ranges[i][0] && d[attributes[i]] <= ranges[i][1];  
- 			}     
+ 	} */    
+  var toVisualize = dataset.filter(function(d) { 
+ // console.log(ranges);   
+ 		//for (var i = 1; i < attributes.length; i++){  //for each attribute, return only if in range 
+ 			//console.log(attributes[i]);  
+ 			return d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
+ 			d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1];  
+ 			//}     
+
  		});   //filter toVisualize by last selected type  
- 	
+ 	console.log(ranges + toVisualize);
  	drawVis(toVisualize); 
  }
 
@@ -233,11 +246,13 @@ function createSliders() {
 		values: [ 0, maxWins],
 		slide: function( event, ui ) {
 			$( "#amount-wins" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-			filterData(["wins"], ui.values);
-			changeAxis(true, ui.values);
+			
+			
 			winsBegin = ui.values[0];
 			winsEnd = ui.values[1];
 			ranges=[[rankBegin,rankEnd],[winsBegin,winsEnd]];
+			filterData(["Wins"], ui.values);
+			changeAxis(true, ui.values);
 			//console.log("wins; " + winsBegin);
 		}
 	});
@@ -252,17 +267,17 @@ function createSliders() {
 		values: [0, maxRank],
 		slide: function( event, ui ) {
 			$( "#amount-rank" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-			filterData(["wins"], ui.values);
-			changeAxis(false, ui.values);
 			rankBegin = ui.values[0];
 			rankEnd = ui.values[1];
 			ranges=[[rankBegin,rankEnd],[winsBegin,winsEnd]];
+			filterData(["Rank"], ui.values);
+			changeAxis(false, ui.values);
 		}
 	});
 	$( "#amount-rank" ).val($( "#slider-rank" ).slider( "values", 0 ) +
 	  " - " + $( "#slider-rank" ).slider( "values", 1 ));
 
-	console.log("begin: " + winsBegin + " end: " + winsEnd);
+	
 }
 
 
