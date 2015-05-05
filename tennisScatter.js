@@ -176,40 +176,37 @@ function filterType(category, mtype)  {
 	 var toVisualize = winsMapArr;  //use all the data       
 	} else {            
 		var toVisualize = dataset.filter(function(d, i) { //filter to only the selected type         
-			return d["Gender"] == currentGender && d["Surface"] == currentSurface;  
+			return d["Gender"] == currentGender && d["Surface"] == currentSurface &&
+			d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
+ 			d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1];  
 		});
 		//Need to adjust axis       
 	}
+	console.log(dataset);
 	drawVis(toVisualize); 
 } 
 
 
  function filterData(attr, values){   
-  //console.log(attr);
-  var index = 0;
-  if(attr = ["Wins"]){
-  	//console.log("it works");
-  	index = 1;
-  } else{
-  	index = 0;
-  }
-
-
+ 
  	/*for (var i = 0; i < attributes.length; i++){     
  		if (attr == attributes[i]){       
  			ranges[i] = values;     
  		}    
  	} */    
+
   var toVisualize = dataset.filter(function(d) { 
+  	console.log(d["Gender"] == currentGender);
  // console.log(ranges);   
  		//for (var i = 1; i < attributes.length; i++){  //for each attribute, return only if in range 
  			//console.log(attributes[i]);  
- 			return d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
+ 			return d["Gender"] == currentGender && d["Surface"] == currentSurface &&
+			d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
  			d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1];  
  			//}     
 
  		});   //filter toVisualize by last selected type  
- 	console.log(ranges + toVisualize);
+ 	//console.log(ranges + toVisualize);
  	drawVis(toVisualize); 
  }
 
