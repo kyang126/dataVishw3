@@ -162,11 +162,14 @@ function createGraphAxis() {
 //When a filter is changed call this to handle it
 function filterData()  { 
 	var toVisualize;
-	if (currentGender == "all" && currentSurface == "all") { //If both set to all then filter winsMapArr
+	if (currentSurface == "all") { //If surface set to all
 		toVisualize = winsMapArr.filter(function (d, i) {
 			if (d.rank >= ranges[0][0] && d.rank <= ranges[0][1] &&
 					d.wins >= ranges[1][0] && d.wins <= ranges[1][1]) { //Is it within the ranges
-				return true;
+				if (currentGender != "all") { //If currentGender is male/female return matching
+					return  d["Gender"] == currentGender;
+				}
+				return true; //Just return everything within ranges
 			}
 			return false;
 		});
