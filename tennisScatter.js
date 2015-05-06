@@ -175,6 +175,11 @@ function filterType(type)  {
 			if (d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
  				d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1]) {
 
+				if(currentGender == "all" && currentSurface == "all"){
+					return d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
+ 				d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1];
+				}
+
 				if (currentGender != "all" && currentSurface != "all") { //If neither is set to all
 					return d["Gender"] == currentGender && d["Surface"] == currentSurface;
 				} else if (currentGender == "all") { //If gender is set to all
@@ -198,6 +203,11 @@ function filterData(attr, values){
 	var toVisualize = dataset.filter(function(d, i) { 
 		if (d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
  				d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1]) {
+
+				if(currentGender == "all" && currentSurface == "all"){
+					return d[attributes[0]] >= ranges[0][0] && d[attributes[0]] <= ranges[0][1] &&
+ 				d[attributes[1]] >= ranges[1][0] && d[attributes[1]] <= ranges[1][1];
+				}
 
 				if (currentGender != "all" && currentSurface != "all") { //If neither is set to all
 					return d["Gender"] == currentGender && d["Surface"] == currentSurface;
