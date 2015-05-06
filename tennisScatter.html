@@ -1,93 +1,112 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
+<head>
+  <style>
 
-body {
-  font: 11px sans-serif;
-}
+	body {
+	  font: 14px sans-serif;
+	}
 
-#graph {
-  float: left;
-  width: 640px;
-  height: 480px;
-}
+	#graph {
+	  float: left;
+	  width: 640px;
+	  height: 480px;
+	}
 
-.axis line,
-.axis text {
-  font: 11px sans-serif;
-}
-.axis path {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
+	.axis line,
+	.axis text {
+	  font: 11px sans-serif;
+	}
+	.axis path {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
 
-.circle:hover {   fill: yellow; } 
+	.circle:hover {   fill: yellow; } 
 
-div.tooltip {
-  position: absolute;
-  text-align: left;
-  padding: 10px;
-  font: 13px sans-serif;
-  background-color: #ddd;
-  border: solid 1px #aaa;
-  border-radius: 5px;
-  pointer-events: none;
-}
+	div.tooltip {
+	  position: absolute;
+	  text-align: left;
+	  padding: 10px;
+	  font: 13px sans-serif;
+	  background-color: #ddd;
+	  border: solid 1px #aaa;
+	  border-radius: 5px;
+	  pointer-events: none;
+	}
 
-div.tooltip > div {
-  margin: 5px auto;
-}
+	#info > div {
+		margin-top: 10px;
+	}
 
-.sliderArea {
-  overflow: auto;
-  padding-bottom: 10px;
-  width: 200px;
-  padding: 10px;
-}
+	select {
+		font-size: 20pt;
+		margin-top: 5px;
+		display: block;
+	}
 
-</style>
+	div.tooltip > div {
+	  margin: 5px auto;
+	}
+
+	#amount-wins, #amount-rank {
+		border: 0; 
+		color: #f6931f;
+		font-weight: bold;
+		font-size: 10pt;
+	}
+
+	#sliderArea {
+	  overflow: auto;
+	  width: 200px;
+	  padding: 0 15px 5px 15px;
+	}
+
+  </style>
+
+</head>
 <body>
 
 <div id="graph"></div>
 
-<!--<p id = "tooltip">Hello</p>-->
-
 <div id="info">
-  <label for="type">Surface Type:</label>     
-  <select id="surfaceSelect">
-    <option value="all">All</option>  
-    <option value="Hard">Hard</option>  
-    <option value="Clay">Clay</option>
-    <option value="Grass">Grass</option>      
-  </select>
-  <br />
-
-  <label for="type">Gender:</label>     
-  <select id="genderSelect">
-    <option value="all">All</option>  
-    <option value="Female">Female</option>  
-    <option value="Male">Male</option>
-  </select>
-
-<div id="sliderArea-wins" class="sliderArea">
-  <p>
-    <label for="amount">Win range:</label>
-    <input type="text" id="amount-wins" readonly style="border:0; color:#f6931f; font-weight:bold;">
-  </p>
-  <div id="slider-wins"></div>
+  <div>
+	<label for="type">Surface Type:</label>     
+	<select id="surfaceSelect">
+	  <option value="all">All</option>  
+	  <option value="Hard">Hard</option>  
+	  <option value="Clay">Clay</option>
+	  <option value="Grass">Grass</option>      
+	</select>
+	<br />
+  </div>
+  <div>
+	<label for="type">Gender:</label>     
+	<select id="genderSelect">
+	  <option value="all">All</option>  
+	  <option value="Female">Female</option>  
+	  <option value="Male">Male</option>
+	</select>
+  </div>
+  <div id="sliderArea">
+	  <div id="sliderArea-wins">
+		<p>
+		  <label for="amount">Win range:</label>
+		  <input type="text" id="amount-wins" size="7" readonly>
+		</p>
+		<div id="slider-wins"></div>
+	  </div>
+	  <div id="sliderArea-rank">
+		<p>
+		  <label for="amount">Rank range:</label>
+		  <input type="text" id="amount-rank" size="11" readonly>
+		</p>
+		<div id="slider-rank"></div>
+	  </div>
   </div>
 </div>
-
-<div id="sliderArea-rank" class="sliderArea">
-  <p>
-    <label for="amount">Rank range:</label>
-    <input type="text" id="amount-rank" readonly style="border:0; color:#f6931f; font-weight:bold;">
-  </p>
-  <div id="slider-rank"></div>
-  </div>
-</div>
-
+</body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
@@ -96,11 +115,5 @@ div.tooltip > div {
 
 <link rel="stylesheet" type="text/css" href="jquery-ui-1.11.4/jquery-ui.css">
 
-<script>                    
-
-</script> 
-
-
-</body>
 </html>
 
